@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Ваши заметки</h1>
+<div class="notes-section">
+    {% for note in notes %}
+    <div class="note-card">
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.content }}</p>
+        {% if note.bound_note_id %}
+            <p>Связано с: <a href="#note-{{ note.bound_note_id }}">№{{ note.bound_note_id }}</a></p>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>У вас пока нет заметок.</p>
+    {% endfor %}
+</div>
+{% endblock %}

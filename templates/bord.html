@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<li class="nav-item">
+    <a class="nav-link" href="/profile">Мои заметки</a>
+</li>
+    <h1>Умные заметки</h1>
+    <div class="container">
+      {% if user %}
+    <div class="form-section">
+        <form method="POST">
+            <!-- Форма без поля username -->
+            <div class="form-group">
+                <label>Название заметки:</label>
+                <input type="text" name="note_title" required>
+            </div>
+            <div class="form-group">
+                <label>Заметка:</label>
+                <textarea name="note_content" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Связать с заметкой:</label>
+                <select name="linked_note">
+                    <option value="">Нет связи</option>
+                    {% for note in notes %}
+                    <option value="{{ note.id }}">{{ note.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Создать заметку</button>
+        </form>
+    </div>
+{% else %}
+    <p>Для создания заметок <a href="/login">войдите</a> или <a href="/registration">зарегистрируйтесь</a>.</p>
+{% endif %}
+
+        <div class="notes-section">
+            {% for note in notes %}
+            <div class="note-card" id="note-{{ note.id }}">
+                <h3 class="note-title">{{ note.title }}</h3>
+                <p>Автор: {{ note.author.username if note.author else 'Неизвестен' }}</p>
+                <p>{{ note.content }}</p>
+                {% if note.bound_note_id %}
+                    <p class="note-link">Связано с: <a href="#note-{{ note.bound_note_id }}">№{{ note.bound_note_id }}</a></p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
